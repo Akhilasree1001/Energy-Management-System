@@ -1,0 +1,197 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}User Sign Up{% endblock %}
+{% block user_login %}active{% endblock %}
+
+{% block content %}
+<style>
+    .register-card {
+        background: rgba(10, 25, 47, 0.9); /* Dark navy to match base.html */
+        backdrop-filter: blur(12px);
+        border-radius: 15px;
+        padding: 2rem;
+        margin: 60px auto;
+        max-width: 600px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(16, 185, 129, 0.2); /* Subtle green border */
+        font-family: 'Roboto', sans-serif;
+        color: #ccd6f6;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+    }
+    .register-card:hover {
+        box-shadow: 0 6px 25px rgba(16, 185, 129, 0.3);
+    }
+    .register-card h2 {
+        font-family: 'Poppins', sans-serif;
+        font-size: 1.8rem;
+        color: #e6f1fa;
+        margin: 0;
+        text-align: center;
+    }
+    .register-form {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    .form-label {
+        color: #ccd6f6;
+        font-weight: 500;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .form-control {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #ccd6f6;
+        border-radius: 6px;
+        padding: 0.75rem;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+    .form-control:focus {
+        border-color: #10b981;
+        box-shadow: 0 0 8px rgba(16, 185, 129, 0.3);
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+    }
+    .form-control::placeholder {
+        color: #a0aec0;
+        font-style: italic;
+    }
+    .button-group {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+    .btn-primary {
+        background: #10b981;
+        border: none;
+        padding: 0.6rem 1.5rem;
+        border-radius: 25px;
+        font-weight: 500;
+        font-size: 0.9rem;
+        color: #fff;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .btn-primary:hover {
+        background: #059669;
+        transform: scale(1.03);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.5);
+    }
+    .btn-secondary {
+        background: transparent;
+        border: 1px solid #ccd6f6;
+        padding: 0.6rem 1.5rem;
+        border-radius: 25px;
+        font-weight: 500;
+        font-size: 0.9rem;
+        color: #ccd6f6;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .btn-secondary:hover {
+        background: rgba(16, 185, 129, 0.1);
+        color: #10b981;
+        border-color: #10b981;
+    }
+    .message {
+        font-size: 0.9rem;
+        color: #10b981;
+        text-align: center;
+        margin-top: 1rem;
+    }
+    @media (max-width: 768px) {
+        .register-card {
+            margin: 30px 15px;
+            padding: 1.5rem;
+            max-width: 90%;
+        }
+        .register-card h2 {
+            font-size: 1.5rem;
+        }
+        .form-control {
+            padding: 0.6rem;
+            font-size: 0.9rem;
+        }
+        .form-label {
+            font-size: 0.8rem;
+        }
+        .btn-primary, .btn-secondary {
+            padding: 0.5rem 1.2rem;
+            font-size: 0.8rem;
+        }
+    }
+</style>
+
+<div class="register-card">
+    <h2>User Sign Up</h2>
+    <form action="{% url 'UserRegisterActions' %}" method="POST" class="register-form">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="id_name" class="form-label">User Name</label>
+            {{ form.name }}
+        </div>
+        <div class="form-group">
+            <label for="id_loginid" class="form-label">Login ID</label>
+            {{ form.loginid }}
+        </div>
+        <div class="form-group">
+            <label for="id_email" class="form-label">Email</label>
+            {{ form.email }}
+        </div>
+        <div class="form-group">
+            <label for="id_mobile" class="form-label">Mobile</label>
+            {{ form.mobile }}
+        </div>
+        <div class="form-group">
+            <label for="id_password" class="form-label">Password</label>
+            {{ form.password }}
+        </div>
+        <div class="form-group">
+            <label for="id_locality" class="form-label">Locality</label>
+            {{ form.locality }}
+        </div>
+        <div class="form-group">
+            <label for="id_city" class="form-label">City</label>
+            {{ form.city }}
+        </div>
+        <div class="form-group">
+            <label for="id_state" class="form-label">State</label>
+            {{ form.state }}
+        </div>
+        <div class="form-group">
+            <label for="id_status" class="form-label">Status</label>
+            {{ form.status }}
+        </div>
+        <div class="form-group">
+            <label for="id_address" class="form-label">Address</label>
+            {{ form.address }}
+        </div>
+        <div class="button-group">
+            <button type="submit" class="btn btn-primary">Register</button>
+            <button type="reset" class="btn btn-secondary">Reset</button>
+        </div>
+        {% if messages %}
+            {% for message in messages %}
+                <p class="message">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    </form>
+</div>
+{% endblock %}

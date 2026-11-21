@@ -1,0 +1,164 @@
+{% extends 'users/userbase.html' %}
+
+{% block title %}
+    Anomaly Detection
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .feature-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 30px;
+        border-radius: 15px;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+    .feature-header h2 {
+        font-size: 32px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+    .feature-header p {
+        font-size: 16px;
+        opacity: 0.9;
+    }
+    .form-card {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+    }
+    .result-card {
+        padding: 25px;
+        border-radius: 15px;
+        margin-top: 20px;
+        font-size: 18px;
+        font-weight: 500;
+    }
+    .alert-danger {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        color: white;
+        border: none;
+    }
+    .alert-success {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        color: white;
+        border: none;
+    }
+    .btn-detect {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        padding: 12px 40px;
+        font-size: 16px;
+        font-weight: 600;
+        border-radius: 50px;
+        color: white;
+        transition: all 0.3s;
+    }
+    .btn-detect:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+    .info-box {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 20px;
+        border-left: 4px solid #667eea;
+    }
+</style>
+
+<div class="feature-header">
+    <h2>⚠️ Anomaly Detection for Energy Theft or Faults</h2>
+    <p>Detect abnormal energy usage patterns using Isolation Forest algorithm</p>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-card">
+            <h4 class="mb-4">Enter Energy Data</h4>
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label for="consumption">Energy Consumption (kWh)</label>
+                    <input type="number" step="0.01" class="form-control" id="consumption" name="consumption"
+                           placeholder="e.g., 50.5" required>
+                    <small class="form-text text-muted">Normal range: 30-70 kWh</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="temperature">Temperature (°C)</label>
+                    <input type="number" step="0.1" class="form-control" id="temperature" name="temperature"
+                           placeholder="e.g., 25.5" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="humidity">Humidity (%)</label>
+                    <input type="number" step="0.1" class="form-control" id="humidity" name="humidity"
+                           placeholder="e.g., 60.0" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="occupancy">Occupancy Status</label>
+                    <select class="form-control" id="occupancy" name="occupancy" required>
+                        <option value="1">Occupied</option>
+                        <option value="0">Unoccupied</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-detect btn-block mt-4">
+                    🔍 Detect Anomaly
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        {% if result %}
+        <div class="result-card alert alert-{{ alert_type }}">
+            <h5>Detection Result:</h5>
+            <p>{{ result }}</p>
+            <hr style="border-color: rgba(255,255,255,0.3);">
+            <p><strong>Recommendation:</strong> {{ recommendation }}</p>
+
+            {% if theft_alert %}
+            <hr style="border-color: rgba(255,255,255,0.3);">
+            <p><strong>Theft Check:</strong> {{ theft_alert }}</p>
+            {% endif %}
+        </div>
+
+        <div class="info-box">
+            <h6><strong>Input Summary:</strong></h6>
+            <ul>
+                <li>Consumption: {{ consumption }} kWh</li>
+                <li>Temperature: {{ temperature }}°C</li>
+                <li>Humidity: {{ humidity }}%</li>
+                <li>Occupancy: {% if occupancy == 1 %}Occupied{% else %}Unoccupied{% endif %}</li>
+            </ul>
+        </div>
+        {% endif %}
+
+        {% if error %}
+        <div class="alert alert-danger">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <div class="info-box">
+            <h6><strong>How it works:</strong></h6>
+            <p>The system uses <strong>Isolation Forest</strong> algorithm to detect anomalies in energy consumption patterns. It analyzes:</p>
+            <ul>
+                <li>Energy consumption levels</li>
+                <li>Environmental conditions (temperature, humidity)</li>
+                <li>Occupancy status</li>
+            </ul>
+            <p>Sudden spikes or unusual patterns trigger alerts for potential energy theft or equipment faults.</p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

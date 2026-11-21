@@ -1,0 +1,371 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="copyright" content="xAI, https://x.ai/">
+    <meta name="description" content="Manage energy usage in smart buildings with our machine learning-powered Energy Management System. Administer user access and monitor analytics.">
+    <meta name="keywords" content="energy management, smart buildings, admin panel, machine learning, xAI">
+    <meta name="author" content="xAI">
+    <title>{% block title %}Smart Building Energy Management - Admin{% endblock %}</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
+
+    <!-- Bootstrap and External CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" media="screen">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/animate.css' %}" media="screen">
+    <link rel="stylesheet" href="{% static 'vendor/owl-carousel/css/owl.carousel.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'vendor/owl-carousel/css/owl.theme.css' %}" rel="stylesheet">
+
+    <!-- Google Fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Orbitron:400,500,700' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,500,700' rel='stylesheet'>
+
+    <!-- Custom CSS -->
+    <style>
+        /* General Styling */
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: url('https://images.unsplash.com/photo-1517502884422-41eaead166d4') no-repeat center center fixed;
+            background-size: cover;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .overlay {
+            background: linear-gradient(135deg, rgba(0, 20, 40, 0.8), rgba(0, 50, 100, 0.6));
+            min-height: 100vh;
+            padding-top: 60px;
+            padding-bottom: 40px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Animated Background Particles */
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+
+        /* Navbar Styling */
+        .navbar-wrapper {
+            background: rgba(10, 20, 50, 0.85);
+            backdrop-filter: blur(12px);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            padding: 0.5rem 1rem;
+            margin: 1rem 2rem;
+            position: sticky;
+            top: 10px;
+            z-index: 1000;
+            transition: all 0.4s ease-in-out;
+        }
+        .navbar-wrapper.scrolled {
+            background: rgba(10, 20, 50, 0.95);
+            transform: scale(0.98);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+        }
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+        }
+        .navbar-brand h2 {
+            color: #00d4ff;
+            font-weight: 700;
+            margin: 0;
+            font-size: 1.6rem;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .navbar-brand img {
+            width: 35px;
+            margin-right: 8px;
+            filter: brightness(1.5);
+            transition: transform 0.5s ease, filter 0.3s ease;
+        }
+        .navbar-brand:hover img {
+            transform: scale(1.2) rotate(360deg);
+            filter: brightness(2);
+        }
+        .navbar-nav {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .nav-item {
+            position: relative;
+            animation: slideIn 0.5s ease forwards;
+            opacity: 0;
+        }
+        .nav-item:nth-child(1) { animation-delay: 0.1s; }
+        .nav-item:nth-child(2) { animation-delay: 0.2s; }
+        .nav-item:nth-child(3) { animation-delay: 0.3s; }
+        @keyframes slideIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .nav > li > a {
+            color: #b0c4de !important;
+            font-size: 1rem;
+            font-weight: 500;
+            padding: 8px 12px !important;
+            transition: all 0.3s ease;
+            font-family: 'Montserrat', sans-serif;
+            border-radius: 5px;
+            text-shadow: 0 0 5px rgba(0, 212, 255, 0.3);
+            position: relative;
+        }
+        .nav > li > a:hover {
+            color: #00d4ff !important;
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.1);
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        }
+        .nav > li.active > a {
+            color: #00d4ff !important;
+            background: rgba(0, 212, 255, 0.1);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+        }
+        .btn-primary {
+            background: linear-gradient(45deg, #00d4ff, #007bff);
+            border: none;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            color: #fff;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 212, 255, 0.3);
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            position: relative;
+            animation: pulseButton 1.5s infinite;
+        }
+        @keyframes pulseButton {
+            0% { box-shadow: 0 0 0 0 rgba(0, 212, 255, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 212, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 212, 255, 0); }
+        }
+        .btn-primary:hover {
+            background: linear-gradient(45deg, #007bff, #00d4ff);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 212, 255, 0.7);
+            animation: none;
+        }
+        .navbar-toggle {
+            border: none;
+            background: transparent;
+            position: relative;
+            width: 30px;
+            height: 20px;
+        }
+        .navbar-toggle .icon-bar {
+            background: #b0c4de;
+            transition: all 0.3s ease;
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            border-radius: 2px;
+        }
+        .navbar-toggle .icon-bar:nth-child(1) { top: 0; }
+        .navbar-toggle .icon-bar:nth-child(2) { top: 8px; }
+        .navbar-toggle .icon-bar:nth-child(3) { top: 16px; }
+        .navbar-toggle.collapsed .icon-bar:nth-child(1) { transform: rotate(0); top: 0; }
+        .navbar-toggle.collapsed .icon-bar:nth-child(2) { opacity: 1; }
+        .navbar-toggle.collapsed .icon-bar:nth-child(3) { transform: rotate(0); top: 16px; }
+        .navbar-toggle:not(.collapsed) .icon-bar:nth-child(1) { transform: rotate(45deg); top: 8px; }
+        .navbar-toggle:not(.collapsed) .icon-bar:nth-child(2) { opacity: 0; }
+        .navbar-toggle:not(.collapsed) .icon-bar:nth-child(3) { transform: rotate(-45deg); top: 8px; }
+        .navbar-toggle:hover .icon-bar {
+            background: #00d4ff;
+        }
+
+        /* Footer Styling */
+        .footer {
+            background: rgba(10, 20, 50, 0.9);
+            padding: 1rem 0;
+            color: #b0c4de;
+            margin-top: auto;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+        .footer a {
+            color: #00d4ff;
+            margin: 0 10px;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+        .footer a:hover {
+            color: #fff;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.7);
+            transform: scale(1.2);
+        }
+        .scrollToTop {
+            color: #b0c4de;
+            font-size: 2rem;
+            transition: all 0.3s ease;
+        }
+        .scrollToTop:hover {
+            color: #00d4ff;
+            transform: rotate(360deg);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar-wrapper {
+                margin: 0.5rem;
+                border-radius: 8px;
+            }
+            .navbar-brand h2 {
+                font-size: 1.4rem;
+            }
+            .navbar-brand img {
+                width: 30px;
+            }
+            .navbar-nav {
+                flex-direction: column;
+                background: rgba(10, 20, 50, 0.9);
+                border-radius: 8px;
+                padding: 1rem;
+                margin-top: 0.5rem;
+            }
+            .nav > li > a {
+                margin: 5px 0;
+                text-align: center;
+                padding: 10px !important;
+            }
+            .btn-primary {
+                margin: 10px auto;
+                display: block;
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body data-spy="scroll" data-target="#navbar-scroll">
+<div id="particles-js"></div>
+<div class="overlay">
+
+    <!-- Navbar -->
+    <div id="menu">
+        <nav class="navbar-wrapper navbar-default" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand site-name" href="{% url 'AdminHome' %}">
+                        <h2>Energy Management</h2>
+                    </a>
+                </div>
+
+                <div id="navbar-scroll" class="collapse navbar-collapse navbar-right" id="navbarSupport">
+                    <ul class="nav navbar-nav">
+                        <li class="nav-item {% block admin_home %}{% endblock %}">
+                            <a class="nav-link" href="{% url 'AdminHome' %}">Home</a>
+                        </li>
+                        <li class="nav-item {% block user_list %}{% endblock %}">
+                            <a class="nav-link" href="{% url 'ViewRegisteredUsers' %}">User Details</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-primary ml-lg-3" href="{% url 'index' %}">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <main style="flex: 1; padding-top: 20px;">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container text-center">
+            <p>© 2025 xAI. All rights reserved.</p>
+            <div>
+                <a href="https://x.ai" target="_blank" aria-label="Visit xAI Website"><i class="fa fa-globe"></i></a>
+                <a href="mailto:support@x.ai" aria-label="Email Support"><i class="fa fa-envelope"></i></a>
+                <a href="https://twitter.com/xAI" target="_blank" aria-label="Follow xAI on Twitter"><i class="fa fa-twitter"></i></a>
+            </div>
+            <a href="#" class="scrollToTop"><i class="fa fa-arrow-circle-o-up"></i></a>
+        </div>
+    </footer>
+</div>
+
+<!-- Scripts -->
+<script src="{% static 'js/jquery-3.5.1.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'vendor/wow/wow.min.js' %}"></script>
+<script src="{% static 'vendor/owl-carousel/js/owl.carousel.min.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+<script>
+    // Initialize WOW.js for animations
+    new WOW().init();
+
+    // Initialize Particles.js
+    particlesJS('particles-js', {
+        particles: {
+            number: { value: 80, density: { enable: true, value_area: 800 } },
+            color: { value: '#00d4ff' },
+            shape: { type: 'circle', stroke: { width: 0, color: '#000000' } },
+            opacity: { value: 0.5, random: true, anim: { enable: true, speed: 1, opacity_min: 0.1, sync: false } },
+            size: { value: 3, random: true, anim: { enable: false, speed: 40, size_min: 0.1, sync: false } },
+            line_linked: { enable: true, distance: 150, color: '#00d4ff', opacity: 0.4, width: 1 },
+            move: { enable: true, speed: 2, direction: 'none', random: false, straight: false, out_mode: 'out', bounce: false }
+        },
+        interactivity: {
+            detect_on: 'canvas',
+            events: { onhover: { enable: true, mode: 'grab' }, onclick: { enable: true, mode: 'push' }, resize: true },
+            modes: { grab: { distance: 140, line_linked: { opacity: 1 } }, push: { particles_nb: 4 } }
+        },
+        retina_detect: true
+    });
+
+    // Scroll to Top and Navbar Scroll Effect
+    $(window).scroll(function() {
+        if ($(this).scrollTop() > 100) {
+            $('.scrollToTop').fadeIn();
+            $('.navbar-wrapper').addClass('scrolled');
+        } else {
+            $('.scrollToTop').fadeOut();
+            $('.navbar-wrapper').removeClass('scrolled');
+        }
+    });
+    $('.scrollToTop').click(function() {
+        $('html, body').animate({scrollTop: 0}, 800);
+        return false;
+    });
+
+    // Ensure navbar toggle animations work
+    $('.navbar-toggle').on('click', function() {
+        $(this).toggleClass('collapsed');
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,304 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                    ENERGY MANAGEMENT SYSTEM - QUICK REFERENCE                ║
+║                           New ML Features Guide                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ 🚀 QUICK START                                                               │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+1. Install Dependencies:
+   pip install xgboost==2.1.3
+
+2. Test Features:
+   python test_new_features.py
+
+3. Run Server:
+   python manage.py runserver
+
+4. Access Application:
+   http://127.0.0.1:8000/
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ 🎯 FEATURE 1: ANOMALY DETECTION                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+URL: /anomaly-detection/
+Menu: "Anomaly Detection"
+
+PURPOSE:
+  Detect abnormal energy usage patterns indicating theft or faults
+
+ALGORITHMS:
+  • Isolation Forest (scikit-learn)
+  • Autoencoder Neural Network (PyTorch)
+
+INPUT PARAMETERS:
+  • Energy Consumption (kWh)    → Normal range: 30-70 kWh
+  • Temperature (°C)             → e.g., 25.5
+  • Humidity (%)                 → e.g., 60.0
+  • Occupancy Status             → Occupied/Unoccupied
+
+OUTPUT:
+  • Anomaly/Normal classification
+  • Alert messages
+  • Energy theft detection
+  • Recommendations
+
+EXAMPLE:
+  Input:  Consumption=150 kWh, Temp=25°C, Humidity=60%, Occupied
+  Output: ⚠️ ANOMALY DETECTED! Consumption exceeds normal by 200%
+
+FILES:
+  • Backend: users/ml_models.py → AnomalyDetector class
+  • View: users/views.py → anomaly_detection_view()
+  • Template: assets/templates/users/anomaly_detection.html
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ ⚡ FEATURE 2: SMART DEVICE SCHEDULING                                        │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+URL: /device-scheduling/
+Menu: "Device Scheduling"
+
+PURPOSE:
+  Automatically schedule appliances for optimal energy efficiency
+
+TECHNOLOGY:
+  • Time-series analysis
+  • Energy price optimization
+  • Occupancy-based scheduling
+
+SUPPORTED DEVICES:
+  • Air Conditioner (AC)
+  • Heater
+  • Water Heater
+  • Washing Machine
+  • Dishwasher
+  • EV Charger
+
+ENERGY PRICING:
+  • Off-Peak:  12AM-6AM, 10PM-12AM  → $0.08/kWh (Cheapest)
+  • Mid-Peak:  6AM-10AM, 4PM-10PM   → $0.10/kWh (Medium)
+  • Peak:      10AM-4PM             → $0.12/kWh (Most Expensive)
+
+WORKFLOW:
+  1. Add Device → Select device, preferred time, duration
+  2. Optimize → System calculates optimal schedule
+  3. View Results → See cost savings and recommended times
+
+EXAMPLE:
+  Device: AC
+  Preferred: 6 PM (Peak hour - $0.12/kWh)
+  Optimized: 10 PM (Off-peak - $0.08/kWh)
+  Savings: 33% cost reduction
+
+FILES:
+  • Backend: users/ml_models.py → DeviceScheduler class
+  • View: users/views.py → device_scheduling_view()
+  • Template: assets/templates/users/device_scheduling.html
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ 📊 FEATURE 3: ENERGY CONSUMPTION PREDICTION                                  │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+URL: /energy-prediction/
+Menu: "Energy Forecast"
+
+PURPOSE:
+  Predict future energy consumption for planning and optimization
+
+ALGORITHMS:
+  • Random Forest Regressor (100 estimators)
+  • XGBoost (Gradient boosting)
+  • LSTM Neural Network (2 layers, 64 units)
+  • Ensemble Method (combines all three)
+
+PREDICTION FACTORS:
+  • Weather conditions (temperature, humidity, wind speed)
+  • Time of day and day of week
+  • Historical consumption patterns
+  • Occupancy status
+  • Seasonal variations
+
+WORKFLOW:
+  1. Train Model → Click "Train Model" (first time only)
+  2. Predict → Click "Predict Next 24 Hours"
+  3. View Results → See hourly predictions, costs, tips
+
+OUTPUT:
+  • 24-hour hourly predictions
+  • Total predicted consumption (kWh)
+  • Estimated total cost ($)
+  • Energy-saving tips
+  • Temperature forecast
+
+EXAMPLE:
+  Prediction: 1,200 kWh over 24 hours
+  Cost: $144.00
+  Peak Hour (2 PM): 65 kWh at $0.12/kWh = $7.80
+  Off-Peak (3 AM): 35 kWh at $0.08/kWh = $2.80
+
+FILES:
+  • Backend: users/ml_models.py → EnergyPredictor, LSTMEnergyPredictor
+  • View: users/views.py → energy_prediction_view()
+  • Template: assets/templates/users/energy_prediction.html
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ 📁 KEY FILES                                                                 │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+NEW FILES CREATED:
+  ✓ users/ml_models.py              → All ML algorithms
+  ✓ users/energy_utils.py           → Utility functions
+  ✓ assets/templates/users/anomaly_detection.html
+  ✓ assets/templates/users/device_scheduling.html
+  ✓ assets/templates/users/energy_prediction.html
+  ✓ test_new_features.py            → Testing script
+  ✓ NEW_FEATURES_README.md          → Detailed documentation
+  ✓ IMPLEMENTATION_SUMMARY.md       → Implementation details
+  ✓ PROJECT_STRUCTURE.md            → Project structure
+  ✓ QUICK_REFERENCE.txt             → This file
+
+MODIFIED FILES:
+  ✓ users/views.py                  → Added 3 new view functions
+  ✓ energy_management/urls.py       → Added 3 new routes
+  ✓ assets/templates/users/userbase.html → Added 3 menu items
+  ✓ requirements.txt                → Added xgboost
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ 🔧 TROUBLESHOOTING                                                           │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+ISSUE: "Model not trained" error
+FIX: Click "Train Model" button before making predictions
+
+ISSUE: Import errors (xgboost not found)
+FIX: pip install xgboost==2.1.3
+
+ISSUE: Template not found
+FIX: Verify templates are in assets/templates/users/ directory
+
+ISSUE: URL not found (404 error)
+FIX: Check energy_management/urls.py has new routes
+
+ISSUE: Menu items not showing
+FIX: Clear browser cache and refresh
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ 📊 EXPECTED BENEFITS                                                         │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+COST SAVINGS:
+  • 15-30% reduction in energy bills
+  • Optimal device scheduling
+  • Peak hour avoidance
+
+SECURITY:
+  • Early detection of energy theft
+  • Equipment fault identification
+  • Real-time alerts
+
+PLANNING:
+  • Accurate 24-hour forecasts
+  • Budget planning
+  • Resource optimization
+
+SUSTAINABILITY:
+  • Reduced carbon footprint
+  • Efficient energy usage
+  • Smart consumption patterns
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ 🧪 TESTING COMMANDS                                                          │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+# Test all features
+python test_new_features.py
+
+# Run development server
+python manage.py runserver
+
+# Run migrations (if needed)
+python manage.py makemigrations
+python manage.py migrate
+
+# Check installed packages
+pip list | grep -E "xgboost|torch|sklearn"
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ 📚 DOCUMENTATION FILES                                                       │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+1. QUICK_REFERENCE.txt         → This file (quick access)
+2. NEW_FEATURES_README.md      → Comprehensive feature guide
+3. IMPLEMENTATION_SUMMARY.md   → Technical implementation details
+4. PROJECT_STRUCTURE.md        → Complete project structure
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ 🎯 USAGE WORKFLOW                                                            │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+STEP 1: Login
+  → Navigate to http://127.0.0.1:8000/
+  → Click "User Login"
+  → Enter credentials
+
+STEP 2: Test Anomaly Detection
+  → Click "Anomaly Detection" in menu
+  → Enter: Consumption=50, Temp=25, Humidity=60, Occupied
+  → Click "Detect Anomaly"
+  → View result: Should show "Normal"
+
+STEP 3: Test Device Scheduling
+  → Click "Device Scheduling" in menu
+  → Add device: AC, Time=18, Duration=4
+  → Click "Add Device"
+  → Click "Optimize Now"
+  → View optimized schedule
+
+STEP 4: Test Energy Prediction
+  → Click "Energy Forecast" in menu
+  → Click "Train Model" (wait ~10 seconds)
+  → Click "Predict Next 24 Hours"
+  → View 24-hour forecast
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ 💡 TIPS & BEST PRACTICES                                                     │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+1. Train models with actual building data for better accuracy
+2. Schedule high-power devices during off-peak hours
+3. Monitor anomaly alerts regularly for security
+4. Use predictions for budget planning
+5. Update weather data for accurate forecasts
+6. Review energy-saving tips provided by the system
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ ✅ IMPLEMENTATION STATUS                                                     │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+[✓] Feature 1: Anomaly Detection       → COMPLETE
+[✓] Feature 2: Device Scheduling       → COMPLETE
+[✓] Feature 3: Energy Prediction       → COMPLETE
+[✓] UI Templates                       → COMPLETE
+[✓] URL Routing                        → COMPLETE
+[✓] Navigation Menu                    → COMPLETE
+[✓] Documentation                      → COMPLETE
+[✓] Testing Script                     → COMPLETE
+
+STATUS: READY FOR DEPLOYMENT
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ 📞 SUPPORT                                                                   │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+For detailed information, refer to:
+  • NEW_FEATURES_README.md
+  • IMPLEMENTATION_SUMMARY.md
+  • PROJECT_STRUCTURE.md
+
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                         END OF QUICK REFERENCE                               ║
+║                    Date: March 9, 2026 | Version: 2.0                       ║
+╚══════════════════════════════════════════════════════════════════════════════╝

@@ -1,0 +1,93 @@
+{% extends 'users/userbase.html' %}
+{% load static %}
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/sample.css' %}"/>
+
+<h2 align="center">Energy Management System for Smart Buildings</h2>
+
+<center>
+    <h1></h1>
+
+    {% if output %}
+        <h5>Result is <font color="RED">{{ output }}</font></h5>
+
+        {% if probabilities %}
+        <div style="margin-top: 20px; padding: 15px; background-color: #f8f9fa; border-radius: 5px; max-width: 500px; margin-left: auto; margin-right: auto;">
+            <h5 style="color: #333;">Prediction Probabilities:</h5>
+            <table class="table table-bordered" style="margin-top: 10px;">
+                <thead>
+                    <tr>
+                        <th>Device</th>
+                        <th>Probability</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for device, prob in probabilities.items %}
+                    <tr>
+                        <td><strong>{{ device }}</strong></td>
+                        <td>{{ prob }}%</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+    {% endif %}
+
+    <form action="{% url 'prediction' %}" class="control-form" method="post">
+        {% csrf_token %}
+        <table class="sm-table">
+            <!-- Numerical Features -->
+            <tr>
+                <td><strong>Temperature (°C)</strong></td>
+                <td>
+                    <input type="number" name="Temperature" step="0.1" min="-50" max="60" required>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Humidity (%)</strong></td>
+                <td>
+                    <input type="number" name="Humidity" step="0.1" min="0" max="100" required>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Wind Speed (m/s)</strong></td>
+                <td>
+                    <input type="number" name="Wind_Speed" step="0.1" min="0" max="30" required>
+                </td>
+            </tr>
+            <tr>
+              <td><strong>Time of Day</strong></td>
+<td>
+    <select name="Time_of_Day" required>
+        {% for hour in hours %}
+            <option value="{{ hour }}">{{ hour }}:00</option>
+        {% endfor %}
+    </select>
+</td>
+
+            </tr>
+            <tr>
+                <td><strong>Day of Week</strong></td>
+                <td>
+                    <select name="Day_of_Week" required>
+                        <option value="0">Sunday</option>
+                        <option value="1">Monday</option>
+                        <option value="2">Tuesday</option>
+                        <option value="3">Wednesday</option>
+                        <option value="4">Thursday</option>
+                        <option value="5">Friday</option>
+                        <option value="6">Saturday</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><button type="submit" class="btn btn-primary">Predict Device</button></td>
+            </tr>
+        </table>
+    </form>
+</center>
+
+{% endblock %}
